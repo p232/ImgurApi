@@ -21,7 +21,7 @@ export default class ButtonUp extends Component {
     function up() {
       let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       if (scrollTop > 0) {
-        window.scrollBy(0, -100);
+        window.scrollBy(0, -scrollTop);
       } else {
         clearInterval(t);
       }

@@ -17,9 +17,15 @@ export const GalleryFilter = props => {
                 onChange={e => onFilterChange(e)}
                 defaultValue={filterOptions.section}
               >
-                <option value="Gaming">Gaming</option>
-                <option value="Most_Viral">Most viral</option>
-                <option value="Movies_and_TV">Movies and TV</option>
+                <option value="hot">Most viral</option>
+                <option value="the_more_you_know">The More You Know</option>
+                <option value="science_and_tech">Science and Tech</option>
+                <option value="gaming">Gaming</option>
+                <option value="eat_what_you_want">Eat What You Want</option>
+                <option value="aww">Aww</option>
+                <option value="Inspiring">Inspiring</option>
+                <option value="movies_and_tv">Movies and TV</option>
+
               </select>
             </div>
             <div className="filter__section">

@@ -1,8 +1,8 @@
 export default function galleriesFilter(
   state = {
     page: "0",
-    section: "Gaming",
-    sort: "time",
+    section: "hot",
+    sort: "viral",
     window: ""
   },
   action

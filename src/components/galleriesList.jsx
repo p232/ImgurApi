@@ -35,20 +35,36 @@ class GalleriesList extends Component {
 
   infinityScroll() {
     const { pageYOffset } = window;
-    const { documentElement: { clientHeight, scrollHeight, scrollTop } } = document;
+    const {
+      documentElement: { clientHeight, scrollHeight, scrollTop }
+    } = document;
     const { load, listEnd, page, currentPage, perPage } = this.state;
     const scrollTopFinal = pageYOffset || scrollTop;
-
-    if (clientHeight + scrollTopFinal >= scrollHeight && !load && listEnd) {
-      this.props.changeFilter({ page: ++this.state.page });
-      this.setState({
-        page: ++this.state.page,
-        load: true,
-        listEnd: false,
-        currentPage: currentPage + perPage
-      });
-    } else if (clientHeight + scrollTopFinal >= scrollHeight && !load && !listEnd) {
-      this.loadNextGalleries(this.props, true);
+    // console.log(
+    //   "clientHeight + scrollTopFinal:",
+    //   clientHeight + scrollTopFinal
+    // );
+    // console.log("clientHeight:", clientHeight);
+    // console.log("scrollTopFinal:", scrollTopFinal);
+    // console.log("scrollHeight:", scrollHeight);
+    // console.log("load:", load);
+    // console.log("listEnd:", listEnd);
+    if (
+      Math.ceil(clientHeight) + Math.ceil(scrollTopFinal) >=
+        Math.ceil(scrollHeight) &&
+      !load
+    ) {
+      if (listEnd) {
+        this.props.changeFilter({ page: ++this.state.page });
+        this.setState({
+          page: ++this.state.page,
+          load: true,
+          listEnd: false,
+          currentPage: currentPage + perPage
+        });
+      } else {
+        this.loadNextGalleries(this.props, true);
+      }
     }
   }
 
@@ -77,7 +93,13 @@ class GalleriesList extends Component {
 
   loadNextGalleries(props, nextPage = false) {
     let currentNextPage;
-    if (this.state.currentPage + this.state.perPage >= props.list.items.length) {
+    let propslist;
+
+    propslist = props.list.hasOwnProperty("items")
+      ? props.list.items
+      : props.list;
+    // console.log("propslist:", propslist);
+    if (this.state.currentPage + this.state.perPage >= propslist.length) {
       this.setState({ listEnd: true });
       currentNextPage = this.state.currentPage;
     } else {
@@ -88,7 +110,7 @@ class GalleriesList extends Component {
       window.scrollTo(0, 0);
       this.setState({
         list: [
-          ...props.list.items.slice(
+          ...propslist.slice(
             this.state.currentPage,
             this.state.currentPage + this.state.perPage
           )
@@ -97,18 +119,29 @@ class GalleriesList extends Component {
         useFilter: false
       });
     } else {
-      console.log("props.list:", props.list.items);
+      // console.log("props.list:", props.list.items);
       this.setState({
         list: [
           ...this.state.list,
-          ...props.list.items.slice(
+          ...propslist.slice(
             this.state.currentPage,
             this.state.currentPage + this.state.perPage
           )
         ],
         currentPage: currentNextPage
       });
-      console.log("this.state.list:", this.state.list);
+      // console.log("this.state.currentPage:", this.state.perPage);
+      // console.log("slice:",{
+      //   list: [
+      //     ...this.state.list,
+      //     ...props.list.items.slice(
+      //       this.state.currentPage,
+      //       this.state.currentPage + this.state.perPage
+      //     )
+      //   ],
+      //   currentPage: currentNextPage
+      // });
+      // console.log("this.state.list:", this.state.list);
     }
   }
 
@@ -124,6 +157,14 @@ class GalleriesList extends Component {
   }
 
   render() {
+    // console.log("length:", this.props.list.length);
+    // console.log("this.props.list:", this.props.list.items);
+    let propslist;
+
+    // propslist = this.props.list.hasOwnProperty("items")
+    //   ? this.props.list.items
+    //   : this.props.list;
+    // console.log("propslist:", propslist);
     return (
       <div className="row gallery-list">
         <GalleryFilter
@@ -132,7 +173,7 @@ class GalleriesList extends Component {
           userSelected={this.state.userSelected}
           topSelected={this.state.topSelected}
         />
-        {this.props.list.length ? (
+        {this.state.list ? (
           this.state.list.map(post => {
             return <Post key={post.id} post={post} />;
           })
@@ -141,9 +182,9 @@ class GalleriesList extends Component {
         )}
         {this.state.load && (
           <div className="loader">
-            <h3 className="loader__title">Loading...</h3>
+            <h3 className="loader__title" />
             <img
-              src="http://img35.laughinggif.com/pic/HTTP2kuZ2lmdHJ1bmsuY29tLzhwbTc2di5naWYlog.gif"
+              src="img/load.gif"
               alt="loading..."
               className="loader__image"
             />

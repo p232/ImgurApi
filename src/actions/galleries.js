@@ -1,4 +1,4 @@
-const API_URL = "https://api.imgur.com/3/gallery/t";
+const API_URL = "https://api.imgur.com/3/gallery";
 
 export const asyncGetGalleries = ({
   section,
@@ -6,8 +6,11 @@ export const asyncGetGalleries = ({
   window,
   page
 }) => dispatch => {
-  const url = `${API_URL}/${section}/${sort}/${window}/${page}`;
-  console.log("url", url);
+  let url_end;
+  url_end = section == "hot" ? "" : "/t";
+  console.log("url_end:", url_end);
+  const url = `${API_URL}${url_end}/${section}/${sort}/${window}/${page}`;
+  console.log("url:", url);
   fetch(url, {
     async: true,
     crossDomain: true,
