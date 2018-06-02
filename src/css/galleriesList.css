@@ -1,0 +1,19 @@
+.gallery-list {
+  padding-top: 70px;
+}
+
+.loader {
+  position: fixed;
+  left: 30px;
+  bottom: 30px;
+}
+
+.loader__image {
+  width: 130px;
+  height: auto;
+}
+
+.loader__title {
+  text-align: center;
+  margin-bottom: 0;
+}
