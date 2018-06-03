@@ -1,0 +1,34 @@
+<html>
+<head>
+    <title>reverse</title>
+
+    <script type="text/javascript">
+        var massivIsh = [];
+        var maxNumber = prompt("Enter numbers in array:");
+        var newData = 0;
+        for (var i = 0; i < maxNumber; i++) {
+            newData = Math.round(1000 * Math.random()); 
+            massivIsh = massivIsh.concat(newData);
+        }
+        
+        document.write(massivIsh.join("<br/>"));
+        document.write("<br/><br/>");
+        massivReverse = myReverse(massivIsh);
+      
+        document.write(massivReverse.join("<br/>"));
+        function myReverse(massiv) {
+            var maxNumber = massiv.length;
+            var NumbersReverse = Math.floor(maxNumber / 2);
+            for (var i = 0; i < NumbersReverse; i++) {
+                massiv[i] = massiv[i] + massiv[maxNumber - 1 - i];
+                massiv[maxNumber - 1 - i] = massiv[i] - massiv[maxNumber - 1 - i];
+                massiv[i] = massiv[i] - massiv[maxNumber - 1 - i];
+            }
+            return massiv;
+        }
+    </script>
+
+</head>
+<body>
+</body>
+</html>
