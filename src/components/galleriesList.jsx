@@ -17,7 +17,7 @@ class GalleriesList extends Component {
       listEnd: false,
       list: [],
       perPage: 40,
-      userSelected: false,
+      hotSelected: true,
       topSelected: false,
       load: false
     };
@@ -40,15 +40,6 @@ class GalleriesList extends Component {
     } = document;
     const { load, listEnd, page, currentPage, perPage } = this.state;
     const scrollTopFinal = pageYOffset || scrollTop;
-    // console.log(
-    //   "clientHeight + scrollTopFinal:",
-    //   clientHeight + scrollTopFinal
-    // );
-    // console.log("clientHeight:", clientHeight);
-    // console.log("scrollTopFinal:", scrollTopFinal);
-    // console.log("scrollHeight:", scrollHeight);
-    // console.log("load:", load);
-    // console.log("listEnd:", listEnd);
     if (
       Math.ceil(clientHeight) + Math.ceil(scrollTopFinal) >=
         Math.ceil(scrollHeight) &&
@@ -82,9 +73,10 @@ class GalleriesList extends Component {
       page: 0
     });
     if (select.name === "section") {
-      option.value === "user"
-        ? this.setState({ userSelected: true })
-        : this.setState({ userSelected: false });
+      option.value === "hot"
+        ? this.setState({ hotSelected: true })
+        : this.setState({ hotSelected: false });
+    } else if (select.name === "sort") {
       option.value === "top"
         ? this.setState({ topSelected: true })
         : this.setState({ topSelected: false });
@@ -98,7 +90,6 @@ class GalleriesList extends Component {
     propslist = props.list.hasOwnProperty("items")
       ? props.list.items
       : props.list;
-    // console.log("propslist:", propslist);
     if (this.state.currentPage + this.state.perPage >= propslist.length) {
       this.setState({ listEnd: true });
       currentNextPage = this.state.currentPage;
@@ -119,7 +110,6 @@ class GalleriesList extends Component {
         useFilter: false
       });
     } else {
-      // console.log("props.list:", props.list.items);
       this.setState({
         list: [
           ...this.state.list,
@@ -130,18 +120,6 @@ class GalleriesList extends Component {
         ],
         currentPage: currentNextPage
       });
-      // console.log("this.state.currentPage:", this.state.perPage);
-      // console.log("slice:",{
-      //   list: [
-      //     ...this.state.list,
-      //     ...props.list.items.slice(
-      //       this.state.currentPage,
-      //       this.state.currentPage + this.state.perPage
-      //     )
-      //   ],
-      //   currentPage: currentNextPage
-      // });
-      // console.log("this.state.list:", this.state.list);
     }
   }
 
@@ -157,21 +135,14 @@ class GalleriesList extends Component {
   }
 
   render() {
-    // console.log("length:", this.props.list.length);
-    // console.log("this.props.list:", this.props.list.items);
     let propslist;
-
-    // propslist = this.props.list.hasOwnProperty("items")
-    //   ? this.props.list.items
-    //   : this.props.list;
-    // console.log("propslist:", propslist);
     return (
       <div className="row gallery-list">
         <GalleryFilter
           filterOptions={this.props.filter}
           onFilterChange={this.onFilterChange.bind(this)}
-          userSelected={this.state.userSelected}
           topSelected={this.state.topSelected}
+          hotSelected={this.state.hotSelected}
         />
         {this.state.list ? (
           this.state.list.map(post => {
@@ -195,10 +166,17 @@ class GalleriesList extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  list: state.galleriesList,
-  filter: state.galleriesFilter
-});
+const mapStateToProps = state => {
+  let stategalleriesList;
+  stategalleriesList = state.galleriesList.hasOwnProperty("items")
+    ? state.galleriesList.items
+    : state.galleriesList;
+
+  return {
+    list: stategalleriesList,
+    filter: state.galleriesFilter
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   getGalleries: params => {

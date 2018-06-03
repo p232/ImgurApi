@@ -3,7 +3,7 @@ export default function galleriesFilter(
     page: "0",
     section: "hot",
     sort: "viral",
-    window: ""
+    window: "week"
   },
   action
 ) {

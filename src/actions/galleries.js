@@ -7,10 +7,10 @@ export const asyncGetGalleries = ({
   page
 }) => dispatch => {
   let url_end;
+  let window_all;
   url_end = section == "hot" ? "" : "/t";
-  console.log("url_end:", url_end);
-  const url = `${API_URL}${url_end}/${section}/${sort}/${window}/${page}`;
-  console.log("url:", url);
+  window_all = !(section == "hot") && sort == "top" ? window + "/" : "";
+  const url = `${API_URL}${url_end}/${section}/${sort}/${window_all}${page}`;
   fetch(url, {
     async: true,
     crossDomain: true,

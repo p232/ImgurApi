@@ -20,6 +20,7 @@ class GalleryView extends Component {
 
   render() {
     const { gallery, comments } = this.props;
+
     return (
       <div className="row">
         <div className="col-md-12">
@@ -39,10 +40,17 @@ class GalleryView extends Component {
   }
 }
 
-const mapStateToProps = (state, { match }) => ({
-  gallery: state.galleriesList.find(i => i.id === match.params.galleryId),
-  comments: state.comments
-});
+const mapStateToProps = (state, { match }) => {
+  let stategalleriesList;
+  stategalleriesList = state.galleriesList.hasOwnProperty("items")
+    ? state.galleriesList.items
+    : state.galleriesList;
+  
+  return {
+    gallery: stategalleriesList.find(i => i.id === match.params.galleryId),
+    comments: state.comments
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   getComments: (id, clear) => {
